@@ -2,7 +2,6 @@ package com.wecp.progressive.controller;
 
 import com.wecp.progressive.entity.Vote;
 import org.springframework.http.ResponseEntity;
-
 import java.util.List;
 import java.util.Map;
 
