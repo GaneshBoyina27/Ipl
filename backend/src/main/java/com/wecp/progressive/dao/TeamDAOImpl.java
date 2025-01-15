@@ -1,7 +1,9 @@
 package com.wecp.progressive.dao;
 
+
 import com.wecp.progressive.config.DatabaseConnectionManager;
 import com.wecp.progressive.entity.Team;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,14 +18,17 @@ public class TeamDAOImpl implements TeamDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         int generatedID = -1;
+
         try {
             connection = DatabaseConnectionManager.getConnection();
             String sql = "INSERT INTO team (team_name, location, owner_name, establishment_year) VALUES (?, ?, ?, ?)";
             statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
             statement.setString(1, team.getTeamName());
             statement.setString(2, team.getLocation());
             statement.setString(3, team.getOwnerName());
             statement.setInt(4, team.getEstablishmentYear());
+
             statement.executeUpdate();
 
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -50,6 +55,7 @@ public class TeamDAOImpl implements TeamDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
+
         try {
             connection = DatabaseConnectionManager.getConnection();
             String sql = "SELECT * FROM team WHERE team_id = ?";
@@ -62,6 +68,7 @@ public class TeamDAOImpl implements TeamDAO {
                 String location = resultSet.getString("location");
                 String ownerName = resultSet.getString("owner_name");
                 int establishmentYear = resultSet.getInt("establishment_year");
+
                 return new Team(teamId, teamName, location, ownerName, establishmentYear);
             }
         } catch (SQLException e) {
@@ -85,6 +92,7 @@ public class TeamDAOImpl implements TeamDAO {
     public void updateTeam(Team team) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
+
         try {
             connection = DatabaseConnectionManager.getConnection();
             String sql = "UPDATE team SET team_name = ?, location = ?, owner_name = ?, establishment_year = ? WHERE team_id = ?";
@@ -109,6 +117,7 @@ public class TeamDAOImpl implements TeamDAO {
     public void deleteTeam(int teamId) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
+
         try {
             connection = DatabaseConnectionManager.getConnection();
             String sql = "DELETE FROM team WHERE team_id = ?";
@@ -131,11 +140,13 @@ public class TeamDAOImpl implements TeamDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
+
         try {
             connection = DatabaseConnectionManager.getConnection();
             String sql = "SELECT * FROM team";
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
                 int teamId = resultSet.getInt("team_id");
                 String teamName = resultSet.getString("team_name");
@@ -154,4 +165,5 @@ public class TeamDAOImpl implements TeamDAO {
         }
         return teams;
     }
+
 }
